@@ -1,0 +1,6 @@
+--timeout 55000
+--recursive
+--reporter spec
+--ui bdd
+--require ts-node/register
+--exit
