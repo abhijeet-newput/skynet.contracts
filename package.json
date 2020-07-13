@@ -4,10 +4,10 @@
   "description": "A chaincode to transact itineraries between participants",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
-    "engines": {
-        "node": ">=8",
-        "npm": ">=5"
-    },
+  "engines": {
+    "node": ">=8",
+    "npm": ">=5"
+  },
   "scripts": {
     "pretest": "npm run lint",
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
@@ -21,8 +21,9 @@
   "author": "Abhijeet Bhowmik",
   "license": "ISC",
   "dependencies": {
-    "fabric-contract-api": "^2.0.0",
-    "fabric-shim": "^2.0.0",
+    "@fidm/x509": "^1.2.1",
+    "fabric-contract-api": "~1.4.0",
+    "fabric-shim": "~1.4.0",
     "loadash": "^1.0.0",
     "uuid": "^8.2.0",
     "validator": "^13.1.1"
