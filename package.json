@@ -22,13 +22,14 @@
   "license": "ISC",
   "dependencies": {
     "@fidm/x509": "^1.2.1",
+    "chai": "^4.2.0",
     "fabric-contract-api": "~1.4.0",
     "fabric-shim": "~1.4.0",
     "loadash": "^1.0.0",
+    "lodash": "^4.17.19",
     "moment": "^2.27.0",
     "uuid": "^8.2.0",
-    "validator": "^13.1.1",
-    "chai": "^4.2.0"
+    "validator": "^13.1.1"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
