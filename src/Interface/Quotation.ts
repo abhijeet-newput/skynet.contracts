@@ -39,3 +39,7 @@ export interface QuotationOptions extends QuotationInterface {
     authorativeSignature: string;
     validate?(): void;
 }
+
+export interface QuotationArgument extends QuotationInterface {
+    mpin: number;
+}

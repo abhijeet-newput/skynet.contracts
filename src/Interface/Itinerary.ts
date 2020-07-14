@@ -36,3 +36,7 @@ export interface ItineraryOptions extends ItineraryInterface {
   bidState: BidState;
   validate?(): void;
 }
+
+export interface ItineraryArgument extends ItineraryInterface {
+  mpin: number;
+}

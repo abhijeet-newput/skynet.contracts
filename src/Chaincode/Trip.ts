@@ -3,13 +3,14 @@
 // Fabric smart contract classes
 import { Contract, Context } from 'fabric-contract-api';
 import * as Entities from '../Lib/index';
-import { ItineraryInterface, ItineraryOptions, BidState, GUID } from '../Interface/Itinerary';
+import { ItineraryInterface, ItineraryOptions, BidState, GUID, ItineraryArgument } from '../Interface/Itinerary';
 import * as moment from 'moment';
 import { v1 } from 'uuid';
-import { QuotationInterface, QuotationOptions, QuotationState, NegotiationStatus } from '../Interface/Quotation';
+import { QuotationInterface, QuotationOptions, QuotationState, NegotiationStatus, QuotationArgument } from '../Interface/Quotation';
 import { createHash } from 'crypto';
 import * as Errors from '../Lib/Errors';
 import { Response, IResponse } from '../Lib/Response';
+import * as _ from 'lodash';
 
 
 
@@ -36,35 +37,20 @@ export class TripChaincode extends Contract {
     }
 
     /**
-     * Buy commercial paper
-     *
      * @param {Context} ctx the transaction context
-     * @param {String} origin origin airport
-     * @param {Integer} destination destination airport
-     * @param {String} arrival arrival
-     * @param {String} distance distance
-     * @param {Integer} pax no. of passangers
-     * @param {String} bidStartTime bid start time
-     * @param {String} bidEndTime bid stale time
-     * @param {String} buyerID buyer ID
-     * @param {String} currency trade currency
+     * @param {String} pld itinerary payload
      */
 
     async createItinerary(
         ctx: Context,
-        payload: {
-            origin : ItineraryInterface['origin'],
-            destination: ItineraryInterface['destination'],
-            departure: ItineraryInterface['departure'],
-            arrival: ItineraryInterface['arrival'],
-            distance: ItineraryInterface['distance'],
-            pax: ItineraryInterface['pax'],
-            bidStartTime: ItineraryInterface['bidStartTime'],
-            bidEndTime: ItineraryInterface['bidEndTime'],
-            currency: ItineraryInterface['currency'],
-            mpin: number
-        }
+        pld: unknown,
     ): Promise<IResponse> {
+
+        const payload : ItineraryArgument = _.attempt(JSON.parse, pld);
+
+        if (payload instanceof Error) {
+            throw new Errors.BadRequestError('Invalid payload');
+        }
 
         const clientIdentity = ctx.clientIdentity;
 
@@ -91,16 +77,20 @@ export class TripChaincode extends Contract {
 
     }
 
+    /**
+     * @param {Context} ctx the transaction context
+     * @param {String} pld quote payload
+     */
     async createQuote(
         ctx: Context,
-        payload: {
-            itineraryID: QuotationInterface['itineraryID'],
-            estimatedCost: QuotationInterface['estimatedCost'],
-            currency: QuotationInterface['currency'],
-            validTill: QuotationInterface['validTill'],
-            mpin: number
-        }
+        pld: unknown,
     ): Promise<IResponse> {
+
+        const payload : QuotationArgument = _.attempt(JSON.parse, pld);
+
+        if (payload instanceof Error) {
+            throw new Errors.BadRequestError('Invalid payload');
+        }
         const clientIdentity = ctx.clientIdentity;
         // get seller ID from certificate
         const sellerID = clientIdentity.getAttributeValue('companyID');

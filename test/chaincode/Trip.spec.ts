@@ -69,10 +69,11 @@ describe('createItinerary', () => {
       userCertPath: userCertPath.broker,
     });
     try {
-      const response = await chaincode.createItinerary(mocked.context, sampleItinerary);
+      const response = await chaincode.createItinerary(mocked.context, JSON.stringify(sampleItinerary));
       expect(response.status).to.be.equal(200);
 
       // inspecting state
+      // tslint:disable-next-line: no-string-literal
       const state = JSON.parse((await mocked.context.stub.getState(response.payload['_id'])).toString('ascii'));
       expect(state).to.haveOwnProperty('_id');
       itinerary_id = state._id;
@@ -90,13 +91,14 @@ describe('createQuote', () => {
       userCertPath: userCertPath.operator,
     });
     try {
-      const response = await chaincode.createQuote(mocked.context, {
+      const response = await chaincode.createQuote(mocked.context, JSON.stringify({
         itineraryID: itinerary_id,
         ... sampleQuote,
-      });
+      }));
       expect(response.status).to.be.equal(200);
 
       // inspecting state
+      // tslint:disable-next-line: no-string-literal
       const state = JSON.parse((await mocked.context.stub.getState(response.payload['_id'])).toString('ascii'));
       expect(state).to.haveOwnProperty('_id');
       quotation_id = state._id;
@@ -111,10 +113,10 @@ describe('createQuote', () => {
       userCertPath: userCertPath.operator,
     });
     try {
-      const response = await chaincode.createQuote(mocked.context, {
+      const response = await chaincode.createQuote(mocked.context, JSON.stringify({
         itineraryID: 'wrong_itinerary_id',
         ... sampleQuote,
-      });
+      }));
       expect(true).to.be.equal(false, 'Error. Quote created with fake itinerary ID');
     } catch(err) {
       expect(err.status).to.be.equal(404);
